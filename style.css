@@ -1,13 +1,12 @@
 /* ===== Variables: my own color palette ===== */
 :root {
-    --color-bg: #f7f8f5;
-    --color-surface: #ffffff;
-    --color-tint: #e8eee6;
-    --color-text: #26332d;
-    --color-muted: #5f6d65;
-    --color-accent: #4f7a63;
-    --color-accent-dark: #3a5e49;
-    --color-border: #d5ddd4;
+    --color-bg: #ffffff;
+    --color-alt: #f5f5f5;
+    --color-text: #1e1e1e;
+    --color-muted: #5a5a5a;
+    --color-accent: #cad13f;
+    --color-accent-dark: #b3ba2a;
+    --color-border: #e0e0e0;
     --radius: 12px;
     --content-width: 1100px;
 }
@@ -35,9 +34,6 @@ img {
     max-width: 100%;
     height: auto;
 }
-h1{
-    color: #244331;
-}
 
 h1,
 h2,
@@ -54,14 +50,15 @@ h3 { font-size: 1.2rem; }
 
 p { margin: 0 0 0.75rem; }
 
-a { color: var(--color-accent-dark); }
+a { color: var(--color-text); }
 
+/* Dark outline so keyboard focus is visible on light backgrounds */
 :focus-visible {
-    outline: 3px solid var(--color-accent);
+    outline: 3px solid var(--color-text);
     outline-offset: 3px;
 }
 
-/* ===== Shared horizontal padding keeps content centered and off the screen edge ===== */
+/* ===== Shared side padding keeps content centered and off the screen edge ===== */
 header,
 main > section,
 footer {
@@ -72,14 +69,15 @@ main > section {
     padding-block: 3.5rem;
 }
 
-/* ===== Buttons ===== */
+/* ===== Buttons: dark text on the lime accent for good contrast ===== */
 .btn,
 button {
     display: inline-block;
     font: inherit;
     font-size: 0.95rem;
+    font-weight: 500;
     text-decoration: none;
-    color: #ffffff;
+    color: var(--color-text);
     background: var(--color-accent);
     border: 0;
     border-radius: 999px;
@@ -94,7 +92,7 @@ button:hover {
 
 /* ===== Header and nav (FLEXBOX) ===== */
 header {
-    background: var(--color-surface);
+    background: var(--color-bg);
     border-bottom: 1px solid var(--color-border);
 }
 
@@ -122,7 +120,7 @@ nav a:hover {
 /* ===== Hero ===== */
 .hero {
     text-align: center;
-    background: var(--color-tint);
+    background: var(--color-alt);
     padding-block: 5rem;
 }
 
@@ -140,7 +138,7 @@ nav a:hover {
 }
 
 .day {
-    background: var(--color-surface);
+    background: var(--color-alt);
     border: 1px solid var(--color-border);
     border-radius: var(--radius);
     padding: 1rem;
@@ -150,7 +148,7 @@ nav a:hover {
     font-size: 1.05rem;
     padding-bottom: 0.5rem;
     margin-bottom: 0.75rem;
-    border-bottom: 1px solid var(--color-border);
+    border-bottom: 2px solid var(--color-accent);
 }
 
 .day p {
@@ -160,6 +158,10 @@ nav a:hover {
 }
 
 /* ===== Trainers (GRID: auto-fit cards) ===== */
+#trainers {
+    background: var(--color-alt);
+}
+
 .trainer-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -167,7 +169,7 @@ nav a:hover {
 }
 
 .trainer-card {
-    background: var(--color-surface);
+    background: var(--color-bg);
     border: 1px solid var(--color-border);
     border-radius: var(--radius);
     padding: 1.5rem;
@@ -179,10 +181,6 @@ nav a:hover {
 }
 
 /* ===== Membership (FLEXBOX: wrapping cards) ===== */
-#membership {
-    background: var(--color-tint);
-}
-
 .pricing-grid {
     display: flex;
     flex-wrap: wrap;
@@ -196,7 +194,7 @@ nav a:hover {
     display: flex;
     flex-direction: column;
     text-align: center;
-    background: var(--color-surface);
+    background: var(--color-alt);
     border: 1px solid var(--color-border);
     border-radius: var(--radius);
     padding: 2rem 1.5rem;
@@ -208,20 +206,24 @@ nav a:hover {
     margin-bottom: 0.5rem;
 }
 
-.pricing-card button {
+/* Works for both <button> and <a class="btn"> */
+.pricing-card button,
+.pricing-card .btn {
     margin-top: auto;
     align-self: center;
 }
 
 .pricing-card.popular {
+    background: var(--color-bg);
     border: 2px solid var(--color-accent);
 }
 
 .badge {
     align-self: center;
     font-size: 0.8rem;
-    color: var(--color-accent-dark);
-    background: var(--color-tint);
+    font-weight: 500;
+    color: var(--color-text);
+    background: var(--color-accent);
     border-radius: 999px;
     padding: 0.15rem 0.8rem;
 }
@@ -232,17 +234,18 @@ footer {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 2rem;
     padding-block: 3rem;
-    color: #e8eee6;
+    color: #d9d9d9;
     background: var(--color-text);
 }
 
 footer h2 {
     font-size: 1.4rem;
     margin-bottom: 0.75rem;
+    color: var(--color-accent);
 }
 
 footer p {
-    color: #c3cfc6;
+    color: #d9d9d9;
 }
 
 /* ===== Tablet ===== */
