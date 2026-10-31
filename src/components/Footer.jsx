@@ -1,22 +1,26 @@
-// src/components/Footer.jsx
+
 export default function Footer() {
   return (
-    <footer id="contact" className="bg-ink text-gray-300">
-      <div className="mx-auto grid max-w-6xl gap-8 px-5 py-12 md:grid-cols-2">
-        <section id="about">
-          <h2 className="mb-3 text-2xl font-bold text-accent">About</h2>
-          <p>
-            The Workout is a neighborhood fitness studio with classes for every
-            level, friendly trainers and flexible memberships.
-          </p>
-        </section>
+    <footer className="footer">
+      <div className="footer-top">
+        <a href="#home" className="footer-brand">
+          IRON<span>.</span>DISTRICT
+        </a>
 
-        <section>
-          <h2 className="mb-3 text-2xl font-bold text-accent">Contact</h2>
-          <p>12 Main St, City</p>
-          <p>Open daily, 6am to 9pm</p>
-        </section>
+        <a href="#home" className="back-top">
+          BACK TO TOP ↑
+        </a>
+      </div>
+
+      <div className="footer-bottom">
+        <span>© 2026 IRON DISTRICT ATHLETIC CLUB</span>
+        <span>BUILT FOR THOSE WHO SHOW UP.</span>
+
+        <div>
+          <a href="#home">INSTAGRAM ↗</a>
+          <a href="#home">FACEBOOK ↗</a>
+        </div>
       </div>
     </footer>
-  )
+  );
 }
