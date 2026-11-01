@@ -4,3 +4,4 @@ export const plans = [
   { id: 2, name: 'Standard', price: 50, perks: 'Unlimited classes', popular: true },
   { id: 3, name: 'Premium', price: 100, perks: 'Unlimited classes with coaching and diet', popular: false },
 ]
+export default plans;

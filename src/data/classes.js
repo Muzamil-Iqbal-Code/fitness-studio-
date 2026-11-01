@@ -1,10 +1,32 @@
-// src/data/classes.js
-export const classes = [
-  { id: 1, day: 'Mon', sessions: ['Yoga 7am', 'Pilates 12pm'] },
-  { id: 2, day: 'Tue', sessions: ['HIIT 6pm', 'Spin 7pm'] },
-  { id: 3, day: 'Wed', sessions: ['Spin 7am', 'HIIT 12pm'] },
-  { id: 4, day: 'Thu', sessions: ['Boxing 6pm', 'Yoga 7pm'] },
-  { id: 5, day: 'Fri', sessions: ['Yoga 7am', 'Spin 6pm'] },
-  { id: 6, day: 'Sat', sessions: ['Pilates 9am', 'HIIT 10am'] },
-  { id: 7, day: 'Sun', sessions: ['Yoga 10am'] },
-]
+
+const classes = [
+  {
+    number: "01",
+    title: "Strength",
+    subtitle: "BUILD YOUR FOUNDATION",
+    category: "Strength",
+    image:
+      "https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=900&q=85",
+    description: "Build real strength through structured resistance training.",
+  },
+  {
+    number: "02",
+    title: "Athletic",
+    subtitle: "MOVE WITH PURPOSE",
+    category: "Athletic",
+    image:
+      "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=900&q=85",
+    description: "Improve endurance, mobility and overall performance.",
+  },
+  {
+    number: "03",
+    title: "Conditioning",
+    subtitle: "PUSH YOUR LIMITS",
+    category: "Conditioning",
+    image:
+      "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=900&q=85",
+    description: "High-energy training designed to challenge your limits.",
+  },
+];
+
+export default classes;
