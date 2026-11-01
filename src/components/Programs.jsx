@@ -1,4 +1,5 @@
 
+import { useState } from "react";
 import classes from "../data/classes";
 
 function Arrow() {
@@ -6,6 +7,15 @@ function Arrow() {
 }
 
 export default function Programs() {
+  const [activeFilter, setActiveFilter] = useState("All");
+
+  const filters = ["All", "Strength", "Athletic", "Conditioning"];
+
+  const filteredClasses =
+    activeFilter === "All"
+      ? classes
+      : classes.filter((program) => program.category === activeFilter);
+
   return (
     <section className="programs section-pad" id="programs">
       <div className="section-label">
@@ -26,8 +36,20 @@ export default function Programs() {
         </p>
       </div>
 
+      <div className="program-filters">
+        {filters.map((filter) => (
+          <button
+            key={filter}
+            onClick={() => setActiveFilter(filter)}
+            className={activeFilter === filter ? "active" : ""}
+          >
+            {filter}
+          </button>
+        ))}
+      </div>
+
       <div className="program-grid">
-        {classes.map((program) => (
+        {filteredClasses.map((program) => (
           <a
             href="#membership"
             className="program-card"

@@ -35,7 +35,8 @@ export default function App() {
         <Reveal><Hero /></Reveal>
         <Marquee />
         <Reveal><About /></Reveal>
-        <Reveal><Programs /></Reveal>
+        {/* <Reveal><Programs /></Reveal> */}
+        <Programs />
         <Reveal><Experience /></Reveal>
         <Reveal><Trainers /></Reveal>
         <Reveal><Membership /></Reveal>
