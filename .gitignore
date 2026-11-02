@@ -22,3 +22,13 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+.neon
+.env
+.env.*
+!.env.example
+# Local AI and Neon development files
+.agents/
+skills-lock.json
+# Local AI and Neon development files
+.agents/
+skills-lock.json

@@ -1,11 +1,34 @@
-
-import { useState } from "react";
-import classes from "../data/classes";
+import { API_URL } from "../api";
+import { useEffect, useState } from "react";
 
 export default function Programs() {
   const [activeFilter, setActiveFilter] = useState("All");
+  const [classes, setClasses] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   const filters = ["All", "Strength", "Athletic", "Conditioning"];
+
+  useEffect(() => {
+    async function fetchClasses() {
+      try {
+        const response = await fetch(`${API_URL}/api/classes`);
+
+        if (!response.ok) {
+          throw new Error("Could not load programs.");
+        }
+
+        const data = await response.json();
+        setClasses(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchClasses();
+  }, []);
 
   const filteredClasses =
     activeFilter === "All"
@@ -35,59 +58,67 @@ export default function Programs() {
         </p>
       </div>
 
-      <div className="my-[30px] flex flex-wrap gap-[10px]">
-        {filters.map((filter) => (
-          <button
-            type="button"
-            key={filter}
-            onClick={() => setActiveFilter(filter)}
-            className={`border px-5 py-[10px] text-[12px] transition-colors ${
-              activeFilter === filter
-                ? "border-[#c5f45b] bg-[#c5f45b] text-[#10110f]"
-                : "border-[#30312c] bg-transparent text-white hover:border-[#c5f45b] hover:text-[#c5f45b]"
-            }`}
-          >
-            {filter}
-          </button>
-        ))}
-      </div>
+      {loading ? (
+        <p className="py-10 text-[#c5f45b]">Loading programs...</p>
+      ) : error ? (
+        <p className="py-10 text-red-400">{error}</p>
+      ) : (
+        <>
+          <div className="my-[30px] flex flex-wrap gap-[10px]">
+            {filters.map((filter) => (
+              <button
+                type="button"
+                key={filter}
+                onClick={() => setActiveFilter(filter)}
+                className={`border px-5 py-[10px] text-[12px] transition-colors ${
+                  activeFilter === filter
+                    ? "border-[#c5f45b] bg-[#c5f45b] text-[#10110f]"
+                    : "border-[#30312c] bg-transparent text-white hover:border-[#c5f45b] hover:text-[#c5f45b]"
+                }`}
+              >
+                {filter}
+              </button>
+            ))}
+          </div>
 
-      <div className="grid grid-cols-3 gap-[17px] max-[700px]:grid-cols-1">
-        {filteredClasses.map((program) => (
-          <a
-            href="#membership"
-            key={program.number}
-            className="group relative min-h-[480px] overflow-hidden bg-[#222] max-[1000px]:min-h-[420px] max-[700px]:min-h-[450px]"
-          >
-            <img
-              src={program.image}
-              alt={program.title}
-              className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-            />
+          <div className="grid grid-cols-3 gap-[17px] max-[700px]:grid-cols-1">
+            {filteredClasses.map((program) => (
+              <a
+                href="#membership"
+                key={program.id}
+                className="group relative min-h-[480px] overflow-hidden bg-[#222] max-[1000px]:min-h-[420px] max-[700px]:min-h-[450px]"
+              >
+                <img
+                  src={program.image}
+                  alt={program.title}
+                  className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                />
 
-            <div className="absolute inset-0 bg-[linear-gradient(0deg,#0b0c0a_0%,transparent_75%)]" />
+                <div className="absolute inset-0 bg-[linear-gradient(0deg,#0b0c0a_0%,transparent_75%)]" />
 
-            <div className="absolute left-5 right-5 top-5 flex justify-between text-[9px] tracking-[1px]">
-              <span>{program.number} / PROGRAM</span>
-              <span className="text-[17px] text-[#c5f45b]">↗</span>
-            </div>
+                <div className="absolute left-5 right-5 top-5 flex justify-between text-[9px] tracking-[1px]">
+                  <span>{program.number} / PROGRAM</span>
+                  <span className="text-[17px] text-[#c5f45b]">↗</span>
+                </div>
 
-            <div className="absolute bottom-[25px] left-[25px] right-[25px]">
-              <small className="text-[9px] tracking-[2px] text-[#c5f45b]">
-                {program.subtitle}
-              </small>
+                <div className="absolute bottom-[25px] left-[25px] right-[25px]">
+                  <small className="text-[9px] tracking-[2px] text-[#c5f45b]">
+                    {program.subtitle}
+                  </small>
 
-              <h3 className="my-[5px] font-['Barlow_Condensed'] text-[54px] font-bold">
-                {program.title}
-              </h3>
+                  <h3 className="my-[5px] font-['Barlow_Condensed'] text-[54px] font-bold">
+                    {program.title}
+                  </h3>
 
-              <p className="text-[11px] leading-[1.7] text-[#c4c4bd]">
-                {program.description}
-              </p>
-            </div>
-          </a>
-        ))}
-      </div>
+                  <p className="text-[11px] leading-[1.7] text-[#c4c4bd]">
+                    {program.description}
+                  </p>
+                </div>
+              </a>
+            ))}
+          </div>
+        </>
+      )}
     </section>
   );
 }
