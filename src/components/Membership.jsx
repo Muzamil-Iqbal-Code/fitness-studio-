@@ -1,3 +1,4 @@
+
 import { API_URL } from "../api";
 import { useEffect, useState } from "react";
 
@@ -6,6 +7,7 @@ export default function Membership() {
   const [selectedPlan, setSelectedPlan] = useState("Standard");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [checkoutLoading, setCheckoutLoading] = useState(null);
 
   useEffect(() => {
     async function fetchPlans() {
@@ -27,6 +29,41 @@ export default function Membership() {
 
     fetchPlans();
   }, []);
+
+  async function handleCheckout(plan) {
+    setError("");
+    setCheckoutLoading(plan.id);
+
+    try {
+      const response = await fetch(`${API_URL}/api/checkout`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          planId: plan.id,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Unable to start checkout.");
+      }
+
+      if (!data.url) {
+        throw new Error("Checkout URL was not returned.");
+      }
+
+      // Redirect the customer to Stripe Checkout.
+      window.location.href = data.url;
+
+    } catch (err) {
+      setError(err.message);
+      setCheckoutLoading(null);
+    }
+  }
 
   return (
     <section
@@ -51,59 +88,74 @@ export default function Membership() {
       </div>
 
       {loading ? (
-        <p className="py-10 text-[#c5f45b]">Loading membership plans...</p>
-      ) : error ? (
+        <p className="py-10 text-[#c5f45b]">
+          Loading membership plans...
+        </p>
+      ) : error && plans.length === 0 ? (
         <p className="py-10 text-red-400">{error}</p>
       ) : (
-        <div className="grid grid-cols-3 gap-5 max-[700px]:grid-cols-1">
-          {plans.map((plan) => {
-            const selected = selectedPlan === plan.name;
+        <>
+          {error && (
+            <p className="mb-5 text-sm text-red-400">{error}</p>
+          )}
 
-            return (
-              <div
-                key={plan.id}
-                className={`relative border p-[30px] transition-colors ${
-                  selected
-                    ? "border-[#c5f45b] bg-[#191a17]"
-                    : "border-[#30312c] bg-[#171815]"
-                }`}
-              >
-                {plan.popular && (
-                  <span className="mb-5 inline-block bg-[#c5f45b] px-3 py-2 text-[9px] font-extrabold tracking-[1px] text-[#10110f]">
-                    MOST POPULAR
-                  </span>
-                )}
+          <div className="grid grid-cols-3 gap-5 max-[700px]:grid-cols-1">
+            {plans.map((plan) => {
+              const selected = selectedPlan === plan.name;
+              const processing = checkoutLoading === plan.id;
 
-                <h3 className="font-['Barlow_Condensed'] text-[35px] font-bold">
-                  {plan.name}
-                </h3>
-
-                <div className="my-7 text-[45px] font-extrabold">
-                  ${Number(plan.price).toFixed(0)}
-                  <small className="ml-2 text-[10px] font-bold tracking-[1px] text-[#85877e]">
-                    / MONTH
-                  </small>
-                </div>
-
-                <p className="mb-8 min-h-[55px] text-[12px] leading-[1.8] text-[#85877e]">
-                  {plan.perks}
-                </p>
-
-                <button
-                  type="button"
-                  onClick={() => setSelectedPlan(plan.name)}
-                  className={`w-full px-5 py-4 text-[10px] font-extrabold tracking-[1px] transition-colors ${
+              return (
+                <div
+                  key={plan.id}
+                  className={`relative border p-[30px] transition-colors ${
                     selected
-                      ? "bg-[#c5f45b] text-[#10110f]"
-                      : "border border-[#30312c] text-white hover:border-[#c5f45b] hover:text-[#c5f45b]"
+                      ? "border-[#c5f45b] bg-[#191a17]"
+                      : "border-[#30312c] bg-[#171815]"
                   }`}
                 >
-                  {selected ? "SELECTED" : "SELECT PLAN"} ↗
-                </button>
-              </div>
-            );
-          })}
-        </div>
+                  {plan.popular && (
+                    <span className="mb-5 inline-block bg-[#c5f45b] px-3 py-2 text-[9px] font-extrabold tracking-[1px] text-[#10110f]">
+                      MOST POPULAR
+                    </span>
+                  )}
+
+                  <h3 className="font-['Barlow_Condensed'] text-[35px] font-bold">
+                    {plan.name}
+                  </h3>
+
+                  <div className="my-7 text-[45px] font-extrabold">
+                    PKR {Number(plan.price).toLocaleString("en-PK")}
+                    <small className="ml-2 text-[10px] font-bold tracking-[1px] text-[#85877e]">
+                      / MONTH
+                    </small>
+                  </div>
+
+                  <p className="mb-8 min-h-[55px] text-[12px] leading-[1.8] text-[#85877e]">
+                    {plan.perks}
+                  </p>
+
+                  <button
+                    type="button"
+                    disabled={checkoutLoading !== null}
+                    onClick={() => {
+                      setSelectedPlan(plan.name);
+                      handleCheckout(plan);
+                    }}
+                    className={`w-full px-5 py-4 text-[10px] font-extrabold tracking-[1px] transition-colors disabled:cursor-not-allowed disabled:opacity-60 ${
+                      selected
+                        ? "bg-[#c5f45b] text-[#10110f]"
+                        : "border border-[#30312c] text-white hover:border-[#c5f45b] hover:text-[#c5f45b]"
+                    }`}
+                  >
+                    {processing
+                      ? "PROCESSING..."
+                      : "BUY NOW ↗"}
+                  </button>
+                </div>
+              );
+            })}
+          </div>
+        </>
       )}
     </section>
   );

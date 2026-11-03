@@ -28,8 +28,13 @@ app.use(cors({
   credentials: true,
 }));
 
-app.use(express.json());
+// Stripe webhook must be registered before express.json().
+app.use(
+  "/api/stripe",
+  require("./routes/stripeWebhook")
+);
 
+app.use(express.json());
 app.use(session({
   store: new PgSession({
     pool,
@@ -57,6 +62,8 @@ app.use("/api/classes", require("./routes/classes"));
 app.use("/api/trainers", require("./routes/trainers"));
 app.use("/api/plans", require("./routes/plans"));
 app.use("/api/auth", require("./routes/auth"));
+app.use("/api/checkout", require("./routes/checkout"));
+app.use("/api/orders", require("./routes/orders"));
 
 const PORT = process.env.PORT || 5000;
 

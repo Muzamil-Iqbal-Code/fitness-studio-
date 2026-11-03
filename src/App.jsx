@@ -10,6 +10,7 @@ import Hero from "./components/Hero";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Reveal from "./components/Reveal";
+import Success from "./pages/Success";
 import "./index.css";
 
 function Marquee() {
@@ -28,6 +29,12 @@ function Marquee() {
 }
 
 export default function App() {
+  const isSuccessPage = window.location.pathname === "/success";
+
+  if (isSuccessPage) {
+    return <Success />;
+  }
+
   return (
     <>
       <Navbar />
@@ -35,7 +42,6 @@ export default function App() {
         <Reveal><Hero /></Reveal>
         <Marquee />
         <Reveal><About /></Reveal>
-        {/* <Reveal><Programs /></Reveal> */}
         <Programs />
         <Reveal><Experience /></Reveal>
         <Reveal><Trainers /></Reveal>
